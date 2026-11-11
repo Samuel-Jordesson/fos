@@ -414,10 +414,11 @@ export default function Home() {
 }
 
 function AuthModal({ mode, setMode, onClose, onDone }) {
-  const [name, setName] = useState(""); const [password, setPassword] = useState(""); const [err, setErr] = useState("");
+  const [name, setName] = useState(""); const [email, setEmail] = useState("");
+  const [password, setPassword] = useState(""); const [err, setErr] = useState("");
   const submit = async (e) => {
     e.preventDefault(); setErr("");
-    try { const d = await api(`/api/auth/${mode}`, { method: "POST", body: { name, password } }); onDone(d.user); }
+    try { const d = await api(`/api/auth/${mode}`, { method: "POST", body: { name, email, password } }); onDone(d.user); }
     catch (x) { setErr(x.message); }
   };
   return (
@@ -425,8 +426,9 @@ function AuthModal({ mode, setMode, onClose, onDone }) {
       <form onClick={(e) => e.stopPropagation()} onSubmit={submit}>
         <h3>{mode === "login" ? "Entrar" : "Criar conta"}</h3>
         <p>{mode === "login" ? "Bem-vindo de volta." : "Crie uma conta para criar salas."}</p>
-        <div className="field"><input placeholder="Nome de usuário" value={name} onChange={(e) => setName(e.target.value)} autoFocus /></div>
-        <div className="field"><input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+        {mode === "register" && <div className="field"><input placeholder="Nome de usuário" value={name} onChange={(e) => setName(e.target.value)} autoFocus maxLength={40} autoComplete="username" /></div>}
+        <div className="field"><input type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} autoFocus={mode === "login"} autoComplete="email" /></div>
+        <div className="field"><input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete={mode === "login" ? "current-password" : "new-password"} /></div>
         {err && <div className="err">{err}</div>}
         <button className="btn">{mode === "login" ? "Entrar" : "Cadastrar"}</button>
         <span className="switch" onClick={() => setMode(mode === "login" ? "register" : "login")}>
