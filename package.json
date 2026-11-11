@@ -1,0 +1,19 @@
+{
+  "name": "forum",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 7434 -H 0.0.0.0 --experimental-https --experimental-https-key certificates/key.pem --experimental-https-cert certificates/cert.pem",
+    "build": "next build",
+    "start": "next start -p 7434",
+    "dev:http": "next dev -p 7434",
+    "predev": "node scripts/cert.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.0",
+    "next": "^15.0.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
